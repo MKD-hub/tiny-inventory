@@ -8,6 +8,7 @@ const migration = async (db: SQLiteDatabase) => {
       brand TEXT NOT NULL,
       type TEXT NOT NULL,
       quantity INTEGER NOT NULL,
+      amount_sold INTEGER DEFAULT 0,
       price INTEGER NOT NULL,
       date_added TEXT NOT NULL
     );

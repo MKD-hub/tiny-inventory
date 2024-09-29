@@ -1,23 +1,27 @@
-import { KeyboardAvoidingView, Platform } from 'react-native'
-import { Button, Input, XStack, YStack, Label, H3, Paragraph } from '@my/ui'
-import { Stack } from 'expo-router'
-import { Formik } from 'formik'
-import * as Yup from 'yup'
-import addItem from 'apps/expo/API/addItem'
-import { useSQLiteContext } from 'expo-sqlite'
-import AddItemSchema from 'apps/expo/API/schema/AddItem.schema'
+import React, { useState } from 'react'
+import { Sheet, XStack, Paragraph, YStack, Label, Input, H3, Button } from '@my/ui';
+import { Formik } from 'formik';
+import { KeyboardAvoidingView, Platform } from 'react-native';
+import AddItemSchema from '../API/schema/AddItem.schema';
 
-const AddItem = () => {
-  const db = useSQLiteContext()
 
+const UpdateSheet = ({ open, setOpen, item }) => {
+  const [position, setPosition] = useState(0)
   return (
-    <>
-      <Stack.Screen
-        options={{
-          headerShown: false,
-        }}
-      />
-      <KeyboardAvoidingView
+    <Sheet
+      modal
+      animation="medium"
+      open={open}
+      onOpenChange={setOpen}
+      snapPoints={[80]}
+      position={position}
+      onPositionChange={setPosition}
+      dismissOnSnapToBottom
+  >
+    <Sheet.Overlay animation="lazy" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
+    <Sheet.Handle bg="$gray8" />
+    <Sheet.Frame jc="flex-start" gap="$10" bg="$color2">
+    <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
       >
@@ -30,21 +34,19 @@ const AddItem = () => {
           }}
           validationSchema={AddItemSchema}
           onSubmit={({ brand, type, quantity, price }) =>
-            addItem(db, { brand, type, quantity, price })
+            console.log({ brand, type, quantity, price })
           }
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched, resetForm }) => (
             <YStack
               width={'90%'}
-              marginTop={'$8'}
               minHeight={'100%'}
               overflow="hidden"
               space="$2"
               margin="$3"
               padding="$2"
-              paddingTop="$12"
             >
-              <H3>Add Item</H3>
+              <H3>Update Item</H3>
 
               <Label width={90} htmlFor="brand">
                 Brand
@@ -57,8 +59,9 @@ const AddItem = () => {
                   componentName="brand"
                   flex={1}
                   size={'$4'}
-                  placeholder={'Enter brand name...'}
+                  placeholder={item["item"]["brand"]}
                   value={values.brand}
+                  defaultValue={item['item']["brand"]}
                 />
               </XStack>
               {errors.brand && touched.brand ? (
@@ -74,8 +77,9 @@ const AddItem = () => {
                   id="type"
                   flex={1}
                   size={'$4'}
-                  placeholder={'Enter type...'}
+                  placeholder={item["item"]["type"]}
                   value={values.type}
+                  defaultValue={item["item"]["type"]}
                 />
               </XStack>
               {errors.type && touched.type ? (
@@ -91,9 +95,10 @@ const AddItem = () => {
                   id="quantity"
                   flex={1}
                   size={'$4'}
-                  placeholder={'Enter qunatity...'}
+                  placeholder={item["item"]["quantity"].toString()}
                   keyboardType="numeric"
                   value={values.quantity}
+                  defaultValue={item["item"]["quantity"]}
                 />
               </XStack>
 
@@ -110,9 +115,10 @@ const AddItem = () => {
                   id="price"
                   flex={1}
                   size={'$4'}
-                  placeholder={'Enter price...'}
+                  placeholder={item["item"]["price"].toString()}
                   keyboardType="numeric"
                   value={values.price}
+                  defaultValue={item["item"]["price"]}
                 />
               </XStack>
               {errors.price && touched.price ? (
@@ -126,8 +132,9 @@ const AddItem = () => {
           )}
         </Formik>
       </KeyboardAvoidingView>
-    </>
+    </Sheet.Frame>
+  </Sheet>
   )
 }
 
-export default AddItem
+export default UpdateSheet

@@ -25,6 +25,7 @@ export default function App() {
   useEffect(() => {
     if (interLoaded || interError) {
       // Hide the splash screen after the fonts have loaded (or an error was returned) and the UI is ready.
+      // Also add this when loading the db
       SplashScreen.hideAsync()
     }
   }, [interLoaded, interError])
@@ -57,15 +58,20 @@ const migrateDbifNeeded = async (db: SQLiteDatabase) => {
   let { user_version: currentDbVersion } = await db.getFirstAsync<any>('PRAGMA user_version')
 
   console.log(currentDbVersion, 'test')
-  if (currentDbVersion) {
-    if (currentDbVersion >= DB_VERSION) {
+  if (currentDbVersion !== null) {
+    if (currentDbVersion > DB_VERSION) {
       db.closeAsync()
       deleteDatabaseAsync('inventory.db')
       return
     }
     if (currentDbVersion === 0) {
-      await migration(db)
-      currentDbVersion = 1
+      try {
+        await migration(db)
+        currentDbVersion = 1
+      }
+      catch (error) {
+        console.warn(error.message)
+      }
     }
   }
 

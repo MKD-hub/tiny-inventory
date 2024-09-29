@@ -11,6 +11,7 @@ import {
   XStack,
   YStack,
 } from '@my/ui'
+
 import { ChevronDown, ChevronUp, X } from '@tamagui/lucide-icons'
 import { useState } from 'react'
 import { Platform } from 'react-native'
@@ -53,6 +54,7 @@ export function HomeScreen({ pagesMode = false }: { pagesMode?: boolean }) {
           This screen uses the same code on Next.js and React Native.
         </Paragraph>
         <Separator />
+      
       </YStack>
 
       <Button {...linkProps}>Link to user</Button>
