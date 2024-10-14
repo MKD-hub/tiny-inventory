@@ -3,10 +3,14 @@ import { Sheet, XStack, Paragraph, YStack, Label, Input, H3, Button } from '@my/
 import { Formik } from 'formik';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import AddItemSchema from '../API/schema/AddItem.schema';
+import updateItem from '../API/updateItem';
+import { useSQLiteContext } from 'expo-sqlite';
 
 
 const UpdateSheet = ({ open, setOpen, item }) => {
   const [position, setPosition] = useState(0)
+  const db = useSQLiteContext();
+
   return (
     <Sheet
       modal
@@ -27,14 +31,17 @@ const UpdateSheet = ({ open, setOpen, item }) => {
       >
         <Formik
           initialValues={{
-            brand: '',
+            brand: item["item"]["brand"],
             type: '',
-            quantity: 0,
-            price: 0,
+            quantity: '',
+            price: '',
           }}
           validationSchema={AddItemSchema}
           onSubmit={({ brand, type, quantity, price }) =>
-            console.log({ brand, type, quantity, price })
+            {
+              // console.log({ brand, type, quantity, price })
+              // updateItem(db, { brand, type, quantity, price, id: item["item"]["id"]})
+            }
           }
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched, resetForm }) => (
@@ -56,7 +63,6 @@ const UpdateSheet = ({ open, setOpen, item }) => {
                   id="brand"
                   onChangeText={handleChange('brand')}
                   onBlur={() => handleBlur('brand')}
-                  componentName="brand"
                   flex={1}
                   size={'$4'}
                   placeholder={item["item"]["brand"]}
@@ -97,7 +103,7 @@ const UpdateSheet = ({ open, setOpen, item }) => {
                   size={'$4'}
                   placeholder={item["item"]["quantity"].toString()}
                   keyboardType="numeric"
-                  value={values.quantity}
+                  value={values.quantity.toString()}
                   defaultValue={item["item"]["quantity"]}
                 />
               </XStack>
@@ -106,7 +112,7 @@ const UpdateSheet = ({ open, setOpen, item }) => {
                 <Paragraph color={'$red6Light'}>{errors.quantity}</Paragraph>
               ) : null}
 
-              <Label width={120} htmlFor="price">
+              <Label width={120}>
                 Price per piece
               </Label>
               <XStack alignItems="center" space="$2">
@@ -117,7 +123,7 @@ const UpdateSheet = ({ open, setOpen, item }) => {
                   size={'$4'}
                   placeholder={item["item"]["price"].toString()}
                   keyboardType="numeric"
-                  value={values.price}
+                  value={values.price.toString()}
                   defaultValue={item["item"]["price"]}
                 />
               </XStack>
@@ -126,7 +132,7 @@ const UpdateSheet = ({ open, setOpen, item }) => {
               ) : null}
 
               <Button marginTop={'$12'} themeInverse onPress={() => handleSubmit()}>
-                Add Item
+                Update
               </Button>
             </YStack>
           )}

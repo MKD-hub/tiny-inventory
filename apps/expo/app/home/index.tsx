@@ -1,6 +1,6 @@
 import { FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Button, YStack } from '@my/ui'
+import { Button, Input, Spacer, XStack, YStack } from '@my/ui'
 
 import ItemSelect from "../../components/ItemSelect"
 
@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import getItems from 'apps/expo/API/getItems';
 import { useSQLiteContext } from 'expo-sqlite'
 
-import { Plus } from '@tamagui/lucide-icons'
+import { Plus, Search } from '@tamagui/lucide-icons'
 import { useLink } from 'solito/navigation'
 
 const Home = () => {
@@ -32,8 +32,27 @@ const Home = () => {
   }, [])
 
   return (
-    <YStack f={1} gap="$8" p="$4" bg="$background" height={"100%"}>
+    <YStack f={1} gap="$8" p="$4" bg="$background">
+
       <SafeAreaView>
+
+        <XStack
+          width={'$20'}
+          f={1}
+          marginBottom={'$8'}
+        >
+          <Input
+            placeholder='search here...' 
+            size={'$4'}
+          />
+
+          <Spacer />
+          
+          <Button>
+            <Search />
+          </Button>
+        </XStack>
+
         <FlatList
           data={items}
           renderItem={(item) => <ItemSelect item={item["item"]} />}
