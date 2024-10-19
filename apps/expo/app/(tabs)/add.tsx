@@ -25,8 +25,8 @@ const AddItem = () => {
           initialValues={{
             brand: '',
             type: '',
-            quantity: 0,
-            price: 0,
+            quantity: '',
+            price: '',
           }}
           validationSchema={AddItemSchema}
           onSubmit={({ brand, type, quantity, price }) =>
@@ -93,7 +93,7 @@ const AddItem = () => {
                   size={'$4'}
                   placeholder={'Enter qunatity...'}
                   keyboardType="numeric"
-                  value={values.quantity}
+                  value={values.quantity.toString()}
                 />
               </XStack>
 
@@ -112,7 +112,7 @@ const AddItem = () => {
                   size={'$4'}
                   placeholder={'Enter price...'}
                   keyboardType="numeric"
-                  value={values.price}
+                  value={values.price.toString()}
                 />
               </XStack>
               {errors.price && touched.price ? (

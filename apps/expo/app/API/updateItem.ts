@@ -8,7 +8,7 @@ const updateItem = async (db: SQLiteDatabase, item: item) => {
     item.type,
     item.quantity,
     item.price,
-    item.id
+    item.id ?? 0 // will always be given so no worries but will overwrite any other content at place one
   )
 }
 

@@ -6,7 +6,7 @@ import { SplashScreen, Stack } from 'expo-router'
 import { Provider } from 'app/provider'
 import { NativeToast } from '@my/ui/src/NativeToast'
 import { SQLiteProvider, deleteDatabaseAsync, type SQLiteDatabase } from 'expo-sqlite'
-import migration from '../API/init/init-migrations'
+import migration from './API/init/init-migrations'
 
 export const unstable_settings = {
   // Ensure that reloading on `/user` keeps a back button present.
@@ -44,7 +44,11 @@ function RootLayoutNav() {
     <SQLiteProvider databaseName="inventory.db" onInit={migrateDbifNeeded}>
       <Provider>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack />
+          <Stack
+            screenOptions={{ headerShown: false }}
+          >
+            <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+          </Stack>
           <NativeToast />
         </ThemeProvider>
       </Provider>
@@ -68,8 +72,7 @@ const migrateDbifNeeded = async (db: SQLiteDatabase) => {
       try {
         await migration(db)
         currentDbVersion = 1
-      }
-      catch (error) {
+      } catch (error) {
         console.warn(error.message)
       }
     }

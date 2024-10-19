@@ -58,15 +58,6 @@ const Home = () => {
           <FlatList data={items} renderItem={(item) => <ItemSelect item={item['item']} />} />
         </SafeAreaView>
 
-        <Button
-          size="$6"
-          circular
-          icon={Plus}
-          {...linkProps}
-          position="absolute"
-          bottom="$4"
-          right="$2"
-        />
       </YStack>
     </>
   )

@@ -5,14 +5,15 @@ import Home from './home'
 export default function Screen() {
   return (
     <>
-      <Stack.Screen
+      {/* <Stack.Screen
         options={{
           title: 'Home',
           headerShown: false
         }}
-      />
+      /> */}
       {/* <HomeScreen /> */}
-      <Home />
+      {/* <Home /> */}
+      
     </>
   )
 }
